@@ -7,11 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { StudentsRecords } from '../state/students-records';
-// import { AppState } from '../state/students-selectors';
-
-// import { StudentsRecords } from "../state/students-records.model";
 import { AppState, selectAll } from "../state/students-selectors";
-// import * as Actions from "../state/students-records.action";
 
 @Component({
   selector: 'app-students-table',
@@ -33,9 +29,11 @@ export class StudentsTableComponent implements OnInit {
 
     this.dataSource$.subscribe(
       (res: any) => {
+        console.log("res", res);
+        
           this.dataSource = res;
       } 
-  );
+    );
 
   }
 }
