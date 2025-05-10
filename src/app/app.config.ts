@@ -5,16 +5,21 @@ import { appRoutes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from "@ngrx/store-devtools";
 import { studentsReducer } from './state/students-reducer';
+import { provideEffects } from '@ngrx/effects';
+import { StudentsRecordsEffects } from './state/students-records-effects';
+import { provideHttpClient } from '@angular/common/http';
 
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
+    provideHttpClient(),
     provideAnimationsAsync(),
+    provideEffects(StudentsRecordsEffects),
     provideStore(),
     provideState({
-        name: 'studentsRecords',
+        name: 'students',
         reducer: studentsReducer
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
