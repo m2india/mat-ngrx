@@ -8,6 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { StudentsRecords } from '../state/students-records';
 import { AppState, selectAll } from "../state/students-selectors";
+import * as Actions from "../state/students-records-action";
+
+
 
 @Component({
   selector: 'app-students-table',
@@ -23,7 +26,10 @@ export class StudentsTableComponent implements OnInit {
   displayColumns: string[] = ['name', 'city', 'country', 'subject', 'passportDeclaration', 'fitnessDeclaration', 'courseName', 'date', 'state', 'street', 'email', 'phone', 'postalCode'];
 
 
-  constructor(private store: Store<AppState>){}
+  constructor(private store: Store<AppState>){
+  
+    this.store.dispatch(Actions.callStudentRecordsApi());
+  }
 
   ngOnInit(): void {
 
@@ -31,7 +37,7 @@ export class StudentsTableComponent implements OnInit {
       (res: any) => {
         console.log("res", res);
         
-          this.dataSource = res;
+          this.dataSource = res?.studentsRecords;
       } 
     );
 
