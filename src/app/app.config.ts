@@ -1,13 +1,17 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
 import { appRoutes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from "@ngrx/store-devtools";
 import { studentsReducer } from './state/students-reducer';
 import { provideEffects } from '@ngrx/effects';
 import { StudentsRecordsEffects } from './state/students-records-effects';
-import { provideHttpClient } from '@angular/common/http';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+
+
 
 
 
@@ -16,11 +20,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(),
     provideAnimationsAsync(),
+    provideRouterStore(),
     provideEffects(StudentsRecordsEffects),
-    provideStore(),
+    provideStore(routerReducer),
     provideState({
-        name: 'students',
-        reducer: studentsReducer
+        name: 'students', // selectors
+        reducer: studentsReducer // reducer
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
   ]
