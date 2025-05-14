@@ -6,23 +6,25 @@ import { Observable, Subject} from "rxjs";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { StudentsRecords } from '../state/students-records';
-import { AppState, selectAll } from "../state/students-selectors";
+import { StudentsRecords } from '../state/students-records.model';
+import { AppState, selectAllStudents, selectStudentById } from "../state/students-selectors";
 import * as Actions from "../state/students-records-action";
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
   selector: 'app-students-table',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatFormFieldModule,MatInputModule,MatTableModule, MatButtonModule, MatCardModule, FormsModule, ReactiveFormsModule],
   templateUrl: './students-table.component.html',
   styleUrl: './students-table.component.scss'
 })
 export class StudentsTableComponent implements OnInit {
 
   dataSource: any = [];
-  dataSource$: Observable<StudentsRecords[]> = this.store.select(selectAll);
+  studentsControl: FormControl = new FormControl();
+  dataSource$: Observable<StudentsRecords[]> = this.store.select(selectAllStudents);
   displayColumns: string[] = ['name', 'city', 'country', 'subject', 'passportDeclaration', 'fitnessDeclaration', 'courseName', 'date', 'state', 'street', 'email', 'phone', 'postalCode'];
 
 
@@ -37,9 +39,19 @@ export class StudentsTableComponent implements OnInit {
       (res: any) => {
         console.log("res", res);
         
-          this.dataSource = res?.studentsRecords;
+          this.dataSource = res;
       } 
     );
+
+    this.studentsControl.valueChanges.subscribe(
+      (value: number) => {
+        const studentsRecord = this.store.select(selectStudentById(value));
+        studentsRecord.subscribe(
+          (res: any) => {
+            this.dataSource =  [res];
+            console.log(res, "select Records");
+          })
+    })
 
   }
 }

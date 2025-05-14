@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { StudentsRecords } from "./students-records";
+import { StudentsRecords } from "./students-records.model";
 
 export const actionsList = {
     callStudentRecordsApi: "[Student Table Component] call students records api",
