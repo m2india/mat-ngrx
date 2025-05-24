@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -10,6 +10,7 @@ import { studentsReducer } from './state/students-reducer';
 import { provideEffects } from '@ngrx/effects';
 import { StudentsRecordsEffects } from './state/students-records-effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -20,7 +21,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(),
     provideAnimationsAsync(),
-    provideRouterStore(),
     provideEffects(StudentsRecordsEffects),
     provideStore(routerReducer),
     provideState({
@@ -28,5 +28,7 @@ export const appConfig: ApplicationConfig = {
         reducer: studentsReducer // reducer
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
+    provideRouterStore(),
+    importProvidersFrom(MatNativeDateModule),
   ]
 };
